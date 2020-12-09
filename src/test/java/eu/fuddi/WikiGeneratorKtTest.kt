@@ -22,9 +22,9 @@ internal class WikiGeneratorKtTest {
                             SubjectProperty(RDF["type"], OWL["Thing"], null)
                     ),
                     RDFS["label"] to listOf(
-                            SubjectProperty(RDFS["label"], null, ValueLiteral("Unknown", "", RDF["langString"])),
                             SubjectProperty(RDFS["label"], null, ValueLiteral("English", "en", RDF["langString"])),
-                            SubjectProperty(RDFS["label"], null, ValueLiteral("Polish", "pl", RDF["langString"]))
+                            SubjectProperty(RDFS["label"], null, ValueLiteral("Polish", "pl", RDF["langString"])),
+                            SubjectProperty(RDFS["label"], null, ValueLiteral("Unknown", "", RDF["langString"]))
                     )
             ),
             OWL["Thing"]
@@ -33,10 +33,6 @@ internal class WikiGeneratorKtTest {
     @Test
     fun `should generate Wiki pages for subject descriptor`() {
         val expected = mapOf(
-                "" to "URI: http://example.org/subject\n" +
-                        "Type: Thing\n" +
-                        "Type NS: owl\n" +
-                        "Label: Unknown",
                 "en" to "URI: http://example.org/subject\n" +
                         "Type: Thing\n" +
                         "Type NS: owl\n" +
@@ -71,10 +67,6 @@ internal class WikiGeneratorKtTest {
     @Test
     fun `should generate Wiki pages and generate titles`() {
         val expected = listOf(
-                "subject" to "URI: http://example.org/subject\n" +
-                        "Type: Thing\n" +
-                        "Type NS: owl\n" +
-                        "Label: Unknown",
                 "subject@en" to "URI: http://example.org/subject\n" +
                         "Type: Thing\n" +
                         "Type NS: owl\n" +

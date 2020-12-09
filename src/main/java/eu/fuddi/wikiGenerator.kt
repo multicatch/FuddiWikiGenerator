@@ -62,11 +62,17 @@ fun SubjectDescriptor.asWikiPages(pebbleEngine: PebbleEngine, templateName: Stri
 
 fun Map<URIRef, List<SubjectProperty>>.groupByLanguage(): Map<String, Map<URIRef, List<SubjectProperty>>> {
     val languages = getLanguages()
-    return languages.map { language ->
+    val result = languages.map { language ->
         language to mapValues { (_, properties) ->
-            properties.filter { it.valueLiteral == null || it.valueLiteral.language == language }
+            properties.filter { it.valueLiteral == null || it.valueLiteral.language.isBlank() || it.valueLiteral.language == language }
         }
     }.toMap()
+
+    return if (result.size > 1) {
+        result.filterNot { (lang, _) -> lang.isBlank() }
+    } else {
+        result
+    }
 }
 
 fun Map<URIRef, List<SubjectProperty>>.getLanguages() = values.flatten()
