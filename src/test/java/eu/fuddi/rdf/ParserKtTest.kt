@@ -51,6 +51,12 @@ internal class ParserKtTest {
     }
 
     @Test
+    fun `should fetch ontology namespace`() {
+        val actualNamespace = model.fetchOntologyNamespace()
+        Assertions.assertEquals(Namespace("https://fuddi.eu/ontology/FFO/Food#"), actualNamespace)
+    }
+
+    @Test
     fun `should read ontology and parse subject`() {
         val namespace = Namespace("https://fuddi.eu/ontology/FFO/Food#")
         val expected = SubjectDescriptor(

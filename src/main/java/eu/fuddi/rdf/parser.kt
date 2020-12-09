@@ -1,11 +1,16 @@
 package eu.fuddi.rdf
 
-import org.apache.jena.rdf.model.Literal
-import org.apache.jena.rdf.model.Model
-import org.apache.jena.rdf.model.Resource
-import org.apache.jena.rdf.model.Statement
+import org.apache.jena.rdf.model.*
 
-fun Model.fetchSubjectsInDefaultNamespace() = fetchSubjectsIn(getNamespaceMap().getOrDefault("", Namespace("")))
+fun Model.fetchSubjectsInDefaultNamespace() = fetchSubjectsIn(fetchOntologyNamespace() ?: Namespace(""))
+
+fun Model.fetchOntologyNamespace() = fetchOntologies().first().uri.let { ontologyUri ->
+    getNamespaceMap().values.find {
+        it.uri.dropLast(1) == ontologyUri
+    }
+}
+
+fun Model.fetchOntologies() = listResourcesWithProperty(createProperty(RDF.uri, "type"), createResource(OWL["Ontology"].uri)).asSequence()
 
 fun Model.fetchSubjectsIn(namespace: Namespace) = listSubjects().asSequence().filter {
     it.uri.startsWith(namespace.uri)
