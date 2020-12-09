@@ -1,0 +1,7 @@
+URI: {{ subjectUri.uri }}
+
+Type: {{ subjectType.identifier }}
+
+Type NS: {{ nsName[subjectType.namespace] }}
+
+Label: {{ properties.get(rdfs.get("label"))[0].valueLiteral.value }}

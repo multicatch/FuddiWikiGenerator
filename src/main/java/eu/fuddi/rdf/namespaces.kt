@@ -8,7 +8,7 @@ data class URIRef(
         val namespace: Namespace,
         val identifier: String
 ) {
-    val uri: String = "$namespace$identifier"
+    val uri: String = "${namespace.uri}$identifier"
 }
 
 data class Namespace(
