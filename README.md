@@ -4,6 +4,10 @@ A tool to generate wiki pages from ontology
 This tools reads an ontology and gathers all subjects from it, then it uses a template file to generate articles describing
 the contents of this ontology. Finally, it connects to a MediaWiki API and creates/updates articles.
 
+Read more at:
+* https://fuddi.eu
+* https://kb.fuddi.eu
+
 ## Under the hood
 
 It uses [Apache Jena](https://jena.apache.org/) to read a given ontology and [Pebble Templates](https://pebbletemplates.io/).
