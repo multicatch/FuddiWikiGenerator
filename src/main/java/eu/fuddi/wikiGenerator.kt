@@ -1,5 +1,6 @@
 package eu.fuddi
 
+import com.mitchellbosecke.pebble.PebbleEngine
 import eu.fuddi.rdf.*
 import eu.fuddi.template.compileText
 import eu.fuddi.template.templateEngine
@@ -17,9 +18,10 @@ fun generateWiki(fileName: String, templateName: String, wikiMediaConfig: WikiMe
 
 fun Model.compileWikiPages(templateName: String): Sequence<Pair<URIRef, Map<String, String>>> {
     val namespaces = getNamespaceMap()
+    val templateEngine = templateEngine()
     return fetchSubjectsInDefaultNamespace()
             .map { it.parseSubject(namespaces.values) }
-            .map { it.uriRef to it.asWikiPages(templateName, namespaces) }
+            .map { it.uriRef to it.asWikiPages(templateEngine, templateName, namespaces) }
 }
 
 fun Sequence<Pair<URIRef, Map<String, String>>>.asPageNameWithText(namespaces: Map<String, Namespace>): Sequence<Pair<String, String>> {
@@ -37,7 +39,7 @@ fun Sequence<Pair<URIRef, Map<String, String>>>.asPageNameWithText(namespaces: M
     }.flatMap { it.asSequence() }
 }
 
-fun SubjectDescriptor.asWikiPages(templateName: String, namespaces: Map<String, Namespace>) = templateEngine().let {
+fun SubjectDescriptor.asWikiPages(pebbleEngine: PebbleEngine, templateName: String, namespaces: Map<String, Namespace>) = pebbleEngine.let {
     val namespaceLookup = namespaces.map { (name, namespace) ->
             namespace to name
     }.toMap()

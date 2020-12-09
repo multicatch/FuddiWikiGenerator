@@ -40,7 +40,7 @@ class WikiMediaClient(
         return responseNode["query"]["tokens"][type.responseField].textValue()
     }
 
-    fun login(token: String, login: String, password: String) {
+    fun login(token: String, login: String, password: String): String {
         val postEntity = postEntityOf(mapOf(
                 "action" to "login",
                 "lgname" to login,
@@ -53,10 +53,10 @@ class WikiMediaClient(
             it.entity = postEntity
         }
 
-        request(post)
+        return String(request(post))
     }
 
-    fun editPost(token: String, title: String, text: String) {
+    fun editPost(token: String, title: String, text: String): String {
         val postEntity = postEntityOf(mapOf(
                 "action" to "edit",
                 "title" to title,
@@ -70,7 +70,7 @@ class WikiMediaClient(
             it.entity = postEntity
         }
 
-        request(post)
+        return String(request(post))
     }
 
     private fun request(request: HttpUriRequest) = client.let {

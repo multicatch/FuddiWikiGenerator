@@ -1,10 +1,11 @@
 package eu.fuddi.template
 
+import com.mitchellbosecke.pebble.PebbleEngine
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 internal class TemplateKtTest {
-    private val engine = templateEngine()
+    private val engine = PebbleEngine.Builder().build()
 
     @Test
     fun `should compile template`() {

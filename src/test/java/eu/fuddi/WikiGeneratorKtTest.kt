@@ -1,11 +1,13 @@
 package eu.fuddi
 
+import com.mitchellbosecke.pebble.PebbleEngine
 import eu.fuddi.rdf.*
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 internal class WikiGeneratorKtTest {
 
+    private val engine = PebbleEngine.Builder().build()
     private val namespace = Namespace("http://example.org/")
     private val namespaces = mapOf(
             "" to namespace,
@@ -28,7 +30,6 @@ internal class WikiGeneratorKtTest {
             OWL["Thing"]
     )
 
-
     @Test
     fun `should generate Wiki pages for subject descriptor`() {
         val expected = mapOf(
@@ -46,7 +47,7 @@ internal class WikiGeneratorKtTest {
                         "Label: Polish"
         )
 
-        val wikiPages = subject.asWikiPages("generator.txt", namespaces)
+        val wikiPages = subject.asWikiPages(engine, "generator.txt", namespaces)
 
         Assertions.assertEquals(expected, wikiPages)
     }
@@ -84,7 +85,7 @@ internal class WikiGeneratorKtTest {
                         "Label: Polish"
         )
 
-        val wikiPages = subject.asWikiPages("generator.txt", namespaces)
+        val wikiPages = subject.asWikiPages(engine, "generator.txt", namespaces)
 
         val pages = sequenceOf(subject.uriRef to wikiPages)
                 .asPageNameWithText(namespaces)
