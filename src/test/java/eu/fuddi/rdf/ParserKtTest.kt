@@ -46,4 +46,44 @@ internal class ParserKtTest {
 
         Assertions.assertEquals(expected, subjects)
     }
+
+    @Test
+    fun `should read ontology and parse subject`() {
+        val namespace = Namespace("https://fuddi.eu/ontology/FFO/Food#")
+        val expected = SubjectDescriptor(
+                namespace["hasAminoAcids"],
+                mapOf(
+                        RDFS["seeAlso"] to listOf(
+                                SubjectProperty(RDFS["seeAlso"], namespace["AminoAcid"], null)
+                        ),
+                        RDFS["label"] to listOf(
+                                SubjectProperty(RDFS["label"], null,
+                                        ValueLiteral(
+                                                "has amino acids",
+                                                "en",
+                                                RDF["langString"]
+                                        )
+                                )
+                        ),
+                        RDFS["subPropertyOf"] to listOf(
+                                SubjectProperty(RDFS["subPropertyOf"], namespace["hasEssentialNutrients"], null)
+                        ),
+                        RDF["type"] to listOf(
+                                SubjectProperty(RDF["type"], OWL["DatatypeProperty"], null)
+                        )
+                ),
+                OWL["DatatypeProperty"]
+        )
+
+        val model = loadModel("data.rdf")
+        val subject = model
+                .fetchSubjectsInDefaultNamespace()
+                .toList()
+                .first()
+                .parseSubject(model.getNamespaceMap().values)
+
+        Assertions.assertEquals(expected, subject)
+    }
+
+
 }

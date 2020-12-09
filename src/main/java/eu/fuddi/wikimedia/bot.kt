@@ -1,6 +1,7 @@
 package eu.fuddi.wikimedia
 
-fun Sequence<Pair<String, String>>.updatePages(url: String, login: String, password: String) {
+fun Sequence<Pair<String, String>>.updatePages(wikiMediaConfig: WikiMediaConfig) {
+    val (url, login, password) = wikiMediaConfig
     WikiMediaClient(url).use { wikiMediaClient ->
         val loginToken = wikiMediaClient.fetchCsrfToken(TokenType.Login)
         wikiMediaClient.login(loginToken, login, password)
