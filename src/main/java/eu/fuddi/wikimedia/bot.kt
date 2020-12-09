@@ -17,9 +17,10 @@ fun Sequence<Pair<String, String>>.updatePages(wikiMediaConfig: WikiMediaConfig)
 
 fun WikiMediaClient.updatePage(title: String, text: String) {
     val token = this.fetchCsrfToken(TokenType.CSRF)
+    logger.info("Sending request to edit {}", title)
     logger.debug("Sending request to edit {} with text {}", title, text)
     val result = this.editPost(token, title, text)
-    logger.debug("Editing {} - RESULT: {}", title, result)
+    logger.info("Editing {} - RESULT: {}", title, result)
 }
 
 private val logger = LoggerFactory.getLogger(WikiMediaClient::class.java)
