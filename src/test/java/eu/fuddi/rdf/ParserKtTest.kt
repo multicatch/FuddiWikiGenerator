@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 internal class ParserKtTest {
+
+    private val model = loadModel("data.rdf")
+
     @Test
     fun `should read ontology and retrieve all subjects in default namespace`() {
         val expected = listOf(
@@ -39,7 +42,7 @@ internal class ParserKtTest {
                 "https://fuddi.eu/ontology/FFO/Food#Food"
         )
 
-        val subjects = loadModel("data.rdf")
+        val subjects = model
                 .fetchSubjectsInDefaultNamespace()
                 .toList()
                 .map { it.uri }
@@ -75,7 +78,6 @@ internal class ParserKtTest {
                 OWL["DatatypeProperty"]
         )
 
-        val model = loadModel("data.rdf")
         val subject = model
                 .fetchSubjectsInDefaultNamespace()
                 .toList()
