@@ -19,17 +19,21 @@ The source file and template file have to be specified by the program arguments.
 There are the following arguments that have to be set in order to run the generator:
 
 * `source-file` - specifies the path to an RDF file containing the ontology.
-* `template-file` - specifies the path to a template used to generate articles (NOTE: the path has to start with `./` or `/` to be read properly by Pebble Templates).
+* `template-directory` - specifies the path to a directory with templates used to generate articles (NOTE: the path has to start with `./` or `/` to be read properly by Pebble Templates).
 * `wikimedia.url` - URL to the WikiMedia API.
 * `wikimedia.login` - login of the bot account.
 * `wikimedia.password` - password of the bot account.
+
+The `template-directory` needs to contain at least `default.txt` file. 
+This tool expects files with the `.txt` extension for any language used in the ontology.
+For example, there can be `en.txt` file.
 
 Example:
 
 ```bash
 java -jar fuddi-wiki-generator-1.0-SNAPSHOT-jar-with-dependencies.jar \
     -source-file ontology.rdf \
-    -template-file ./template.txt \
+    -template-directory ./templates/ \
     -wikimedia.url https://kb.fuddi.eu/api.php \
     -wikimedia.login WikiBot \
     -wikimedia.password BotPassword

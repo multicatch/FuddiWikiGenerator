@@ -7,8 +7,8 @@ fun main(args: Array<String>) {
     ARQ.init()
     val parameters = args.asArgumentMap()
     val sourceFile = parameters["source-file"] ?: error("No source-file given!")
-    val templateName = parameters["template-file"] ?: error("No template-file given!")
-    generateWiki(sourceFile, templateName, wikiMediaConfigOf(parameters))
+    val templateDirectory = parameters["template-directory"] ?: error("No template-directory given!")
+    generateWiki(sourceFile, templateDirectory, wikiMediaConfigOf(parameters))
 }
 
 fun Array<String>.asArgumentMap() = toList().zipWithNext()

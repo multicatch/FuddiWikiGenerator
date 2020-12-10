@@ -9,19 +9,19 @@ import eu.fuddi.wikimedia.updatePages
 import org.apache.jena.rdf.model.Model
 import org.apache.jena.riot.RDFDataMgr
 
-fun generateWiki(fileName: String, templateName: String, wikiMediaConfig: WikiMediaConfig) {
+fun generateWiki(fileName: String, templateDirectory: String, wikiMediaConfig: WikiMediaConfig) {
     val model = RDFDataMgr.loadModel(fileName)
-    model.compileWikiPages(templateName)
+    model.compileWikiPages(templateDirectory)
             .asPageNameWithText(model.getNamespaceMap())
             .updatePages(wikiMediaConfig)
 }
 
-fun Model.compileWikiPages(templateName: String): Sequence<Pair<URIRef, Map<String, String>>> {
+fun Model.compileWikiPages(templateDirectory: String): Sequence<Pair<URIRef, Map<String, String>>> {
     val namespaces = getNamespaceMap()
     val templateEngine = templateEngine()
     return fetchSubjectsInDefaultNamespace()
             .map { it.parseSubject(namespaces.values) }
-            .map { it.uriRef to it.asWikiPages(templateEngine, templateName, namespaces) }
+            .map { it.uriRef to it.asWikiPages(templateEngine, templateDirectory, namespaces) }
 }
 
 fun Sequence<Pair<URIRef, Map<String, String>>>.asPageNameWithText(namespaces: Map<String, Namespace>): Sequence<Pair<String, String>> {
@@ -39,7 +39,7 @@ fun Sequence<Pair<URIRef, Map<String, String>>>.asPageNameWithText(namespaces: M
     }.flatMap { it.asSequence() }
 }
 
-fun SubjectDescriptor.asWikiPages(pebbleEngine: PebbleEngine, templateName: String, namespaces: Map<String, Namespace>) = pebbleEngine.let {
+fun SubjectDescriptor.asWikiPages(pebbleEngine: PebbleEngine, templateDirectory: String, namespaces: Map<String, Namespace>) = pebbleEngine.let {
     val namespaceLookup = namespaces.map { (name, namespace) ->
             namespace to name
     }.toMap()
@@ -51,10 +51,11 @@ fun SubjectDescriptor.asWikiPages(pebbleEngine: PebbleEngine, templateName: Stri
     )
     val subjectVariables = namespaces + mapOf("nsName" to namespaceLookup) + subjectDescriptorMap
 
-    propertiesByLanguage.mapValues { (_, properties) ->
+    propertiesByLanguage.mapValues { (language, properties) ->
         val propertyMap = mapOf("properties" to properties)
         it.compileText(
-                templateName,
+                templateDirectory,
+                language,
                 subjectVariables + propertyMap
         )
     }

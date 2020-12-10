@@ -43,7 +43,7 @@ internal class WikiGeneratorKtTest {
                         "Label: Polish"
         )
 
-        val wikiPages = subject.asWikiPages(engine, "generator.txt", namespaces)
+        val wikiPages = subject.asWikiPages(engine, "generator/", namespaces)
 
         Assertions.assertEquals(expected, wikiPages)
     }
@@ -77,7 +77,7 @@ internal class WikiGeneratorKtTest {
                         "Label: Polish"
         )
 
-        val wikiPages = subject.asWikiPages(engine, "generator.txt", namespaces)
+        val wikiPages = subject.asWikiPages(engine, "generator/", namespaces)
 
         val pages = sequenceOf(subject.uriRef to wikiPages)
                 .asPageNameWithText(namespaces)
