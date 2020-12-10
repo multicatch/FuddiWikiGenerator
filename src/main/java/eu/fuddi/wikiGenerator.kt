@@ -1,8 +1,7 @@
 package eu.fuddi
 
-import com.mitchellbosecke.pebble.PebbleEngine
 import eu.fuddi.rdf.*
-import eu.fuddi.template.compileText
+import eu.fuddi.template.asWikiPages
 import eu.fuddi.template.templateEngine
 import eu.fuddi.wikimedia.WikiMediaConfig
 import eu.fuddi.wikimedia.updatePages
@@ -38,44 +37,3 @@ fun Sequence<Pair<URIRef, Map<String, String>>>.asPageNameWithText(namespaces: M
         }
     }.flatMap { it.asSequence() }
 }
-
-fun SubjectDescriptor.asWikiPages(pebbleEngine: PebbleEngine, templateDirectory: String, namespaces: Map<String, Namespace>) = pebbleEngine.let {
-    val namespaceLookup = namespaces.map { (name, namespace) ->
-            namespace to name
-    }.toMap()
-
-    val propertiesByLanguage = properties.groupByLanguage()
-    val subjectDescriptorMap = mapOf(
-            "subjectUri" to uriRef,
-            "subjectType" to type
-    )
-    val subjectVariables = namespaces + mapOf("nsName" to namespaceLookup) + subjectDescriptorMap
-
-    propertiesByLanguage.mapValues { (language, properties) ->
-        val propertyMap = mapOf("properties" to properties)
-        it.compileText(
-                templateDirectory,
-                language,
-                subjectVariables + propertyMap
-        )
-    }
-}
-
-fun Map<URIRef, List<SubjectProperty>>.groupByLanguage(): Map<String, Map<URIRef, List<SubjectProperty>>> {
-    val languages = getLanguages()
-    val result = languages.map { language ->
-        language to mapValues { (_, properties) ->
-            properties.filter { it.valueLiteral == null || it.valueLiteral.language.isBlank() || it.valueLiteral.language == language }
-        }
-    }.toMap()
-
-    return if (result.size > 1) {
-        result.filterNot { (lang, _) -> lang.isBlank() }
-    } else {
-        result
-    }
-}
-
-fun Map<URIRef, List<SubjectProperty>>.getLanguages() = values.flatten()
-        .mapNotNull { it.valueLiteral?.language }
-        .toSet()

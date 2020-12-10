@@ -3,6 +3,7 @@ package eu.fuddi.rdf
 val RDF = Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
 val RDFS = Namespace("http://www.w3.org/2000/01/rdf-schema#")
 val OWL = Namespace("http://www.w3.org/2002/07/owl#")
+val XSD = Namespace("http://www.w3.org/2001/XMLSchema#")
 
 data class URIRef(
         val namespace: Namespace,

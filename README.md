@@ -75,13 +75,48 @@ Retrieving an URI of owl:Thing:
 
 Retrieving all labels associated with subject (NOTE: it returns a list of object of type [SubjectProperty](src/main/java/eu/fuddi/rdf/parser.kt)):
 ```
-{{ properties.get(rdfs.get("label")) }}
+{{ properties[rdfs.get("label")] }}
 ```
 
 Displaying subject's label in a readable form:
 ```
-{{ properties.get(rdfs.get("label"))[0].valueLiteral.value }}
+{{ properties[rdfs.get("label")][0].valueLiteral.value }}
 ```
+
+## Custom functions
+
+There are 3 custom functions that anyone can use to display values:
+
+* `printLiteral(literal)` - prints literal value (NOTE: `literal` must be of type [ValueLiteral](src/main/java/eu/fuddi/rdf/parser.kt))
+* `wikiLink(uri)` - prints [URIRef](src/main/java/eu/fuddi/rdf/namespaces.kt) as a Wiki Link
+* `wikiReadable(subject)` - accepts [SubjectProperty](src/main/java/eu/fuddi/rdf/parser.kt),  [ValueLiteral](src/main/java/eu/fuddi/rdf/parser.kt) 
+or [URIRef](src/main/java/eu/fuddi/rdf/namespaces.kt) and prints it in a most appropriate way
+
+Examples:
+
+Printing URI as a link:
+```
+{{ wikiLink(subjectUri) }}
+```
+
+Printing label:
+```
+{{ printLiteral(properties[rdfs.get("label")][0]) }}
+```
+
+Printing all properties:
+```
+{% for property in properties %}
+
+{{ wikiReadable(property.key) }}
+
+{% for propertyValue in property.value %}
+    {{ wikiReadable(propertyValue) }}
+
+{% endfor %}
+{% endfor %}
+```
+
 
 ## License
 

@@ -65,10 +65,18 @@ data class SubjectProperty(
         val predicate: URIRef,
         val valueRef: URIRef?,
         val valueLiteral: ValueLiteral?
-)
+) {
+    override fun toString() = valueRef?.uri
+            ?: if (valueLiteral != null) {
+                val langRef = valueLiteral.language.takeIf { !it.isNullOrBlank() }?.let { "@$it" } ?: ""
+                """"${valueLiteral.value}"^^${valueLiteral.datatype.uri}$langRef"""
+            } else {
+                "null"
+            }
+}
 
 data class ValueLiteral(
         val value: String,
-        val language: String,
+        val language: String?,
         val datatype: URIRef
 )

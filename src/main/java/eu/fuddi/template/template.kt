@@ -6,7 +6,10 @@ import com.mitchellbosecke.pebble.loader.FileLoader
 import org.slf4j.LoggerFactory
 import java.io.StringWriter
 
-fun templateEngine(): PebbleEngine = PebbleEngine.Builder().loader(FileLoader()).build()
+fun templateEngine(): PebbleEngine = PebbleEngine.Builder()
+        .loader(FileLoader())
+        .extension(FuddiExtension())
+        .build()
 
 fun PebbleEngine.compileText(directory: String, language: String, variables: Map<String, Any?>): String {
     val languageFile = language.toLowerCase() + ".txt"

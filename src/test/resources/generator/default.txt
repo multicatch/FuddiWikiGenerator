@@ -1,7 +1,19 @@
 URI: {{ subjectUri.uri }}
 
+Link: {{ wikiLink(subjectUri) }}
+
 Type: {{ subjectType.identifier }}
 
 Type NS: {{ nsName[subjectType.namespace] }}
 
-Label: {{ properties.get(rdfs.get("label"))[0].valueLiteral.value }}
+Label: {{ printLiteral(properties[rdfs.get("label")][0]) }}
+
+{% for property in properties %}
+
+{{ wikiReadable(property.key) }}
+
+{% for propertyValue in property.value %}
+    {{ wikiReadable(propertyValue) }}
+
+{% endfor %}
+{% endfor %}
