@@ -15,7 +15,7 @@ fun PebbleEngine.compileText(directory: String, language: String, variables: Map
     val template = try {
         getTemplate(fileName)
     } catch(e: LoaderException) {
-        val defaultFileName = "$directory/$DEFAULT_FILE"
+        val defaultFileName = "$directory$DEFAULT_FILE"
         logger.warn("Cannot load $fileName, defaulting to $defaultFileName.")
         getTemplate(defaultFileName)
     }
