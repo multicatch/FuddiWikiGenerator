@@ -24,7 +24,8 @@ internal class WikiGeneratorKtTest {
                     "    Unknown\n" +
                     "\n" +
                     "[[rdfs:isDefinedBy@en]]\n" +
-                    "    2.2 (http://www.w3.org/2001/XMLSchema#double)\n",
+                    "    2.2 (http://www.w3.org/2001/XMLSchema#double)\n" +
+                    "    2.2 ([[double@en]])\n",
             "pl" to "URI: http://example.org/subject\n" +
                     "Link: [[subject@pl]]\n" +
                     "Type: Thing\n" +
@@ -39,7 +40,8 @@ internal class WikiGeneratorKtTest {
                     "    Unknown\n" +
                     "\n" +
                     "[[rdfs:isDefinedBy@pl]]\n" +
-                    "    2.2 (http://www.w3.org/2001/XMLSchema#double)\n"
+                    "    2.2 (http://www.w3.org/2001/XMLSchema#double)\n" +
+                    "    2.2 ([[double@pl]])\n"
     )
 
     private val engine = PebbleEngine.Builder()
@@ -65,7 +67,8 @@ internal class WikiGeneratorKtTest {
                             SubjectProperty(RDFS["label"], null, ValueLiteral("Unknown", "", RDF["langString"]))
                     ),
                     RDFS["isDefinedBy"] to listOf(
-                            SubjectProperty(RDFS["isDefinedBy"], null, ValueLiteral("2.2", null, XSD["double"]))
+                            SubjectProperty(RDFS["isDefinedBy"], null, ValueLiteral("2.2", null, XSD["double"])),
+                            SubjectProperty(RDFS["isDefinedBy"], null, ValueLiteral("2.2", null, namespace["double"]))
                     )
             ),
             OWL["Thing"]

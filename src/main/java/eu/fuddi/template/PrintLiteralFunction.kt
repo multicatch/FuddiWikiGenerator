@@ -38,5 +38,6 @@ fun textOf(namespaceLookup: Map<Namespace, String>, literal: ValueLiteral?, lang
         return literal.value
     }
 
-    return "${literal.value} (${wikiLinkOf(namespaceLookup, literal.datatype, literal.language ?: language)})"
+    val lang = literal.language.takeIf { !it.isNullOrBlank() } ?: language
+    return "${literal.value} (${wikiLinkOf(namespaceLookup, literal.datatype, lang)})"
 }

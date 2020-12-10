@@ -39,12 +39,10 @@ fun Map<URIRef, List<SubjectProperty>>.groupByLanguage(): Map<String, Map<URIRef
         }
     }.toMap()
 
-    return if (result.size > 1) {
-        result.filterNot { (lang, _) -> lang.isBlank() }
-    } else if (result.size == 1) {
-        result
-    } else {
-        mapOf("" to this)
+    return when {
+        result.size > 1 -> result.filterNot { (lang, _) -> lang.isBlank() }
+        result.size == 1 -> result
+        else -> mapOf("" to this)
     }
 }
 
