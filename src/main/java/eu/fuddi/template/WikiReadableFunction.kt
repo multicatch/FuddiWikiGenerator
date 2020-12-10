@@ -20,7 +20,7 @@ class WikiReadableFunction : Function {
         val language = context.getVariable(LANGUAGE_PROPERTY) as String?
         return when (val argument = args[SUBJECT]) {
             is SubjectProperty -> argument.asWikiReadable(namespaceLookup, language)
-            is ValueLiteral -> textOf(namespaceLookup, argument)
+            is ValueLiteral -> textOf(namespaceLookup, argument, language)
             is URIRef -> wikiLinkOf(namespaceLookup, argument, language)
             else -> null
         }
@@ -29,6 +29,6 @@ class WikiReadableFunction : Function {
     private fun SubjectProperty.asWikiReadable(namespaceLookup: Map<Namespace, String>, language: String?) = if (valueRef != null) {
         wikiLinkOf(namespaceLookup, valueRef, language)
     } else {
-        textOf(namespaceLookup, valueLiteral)
+        textOf(namespaceLookup, valueLiteral, language)
     }
 }
