@@ -41,8 +41,10 @@ fun Map<URIRef, List<SubjectProperty>>.groupByLanguage(): Map<String, Map<URIRef
 
     return if (result.size > 1) {
         result.filterNot { (lang, _) -> lang.isBlank() }
-    } else {
+    } else if (result.size == 1) {
         result
+    } else {
+        mapOf("" to this)
     }
 }
 
