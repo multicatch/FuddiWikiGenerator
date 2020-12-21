@@ -9,7 +9,7 @@ import eu.fuddi.rdf.URIRef
 const val NS_LOOKUP_PROPERTY = "nsName"
 const val LANGUAGE_PROPERTY = "language"
 
-fun SubjectDescriptor.asWikiPages(pebbleEngine: PebbleEngine, templateDirectory: String, namespaces: Map<String, Namespace>) = pebbleEngine.let {
+fun SubjectDescriptor.asWikiPages(pebbleEngine: PebbleEngine, templateDirectory: String, namespaces: Map<String, Namespace>, additionalVariables: Map<String, Any> = mapOf()) = pebbleEngine.let {
     val namespaceLookup = namespaces.map { (name, namespace) ->
         namespace to name
     }.toMap()
@@ -26,7 +26,7 @@ fun SubjectDescriptor.asWikiPages(pebbleEngine: PebbleEngine, templateDirectory:
         it.compileText(
                 templateDirectory,
                 language,
-                subjectVariables + propertyMap
+                subjectVariables + additionalVariables + propertyMap
         )
     }
 }

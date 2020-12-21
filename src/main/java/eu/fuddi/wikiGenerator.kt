@@ -8,6 +8,8 @@ import eu.fuddi.wikimedia.updatePages
 import org.apache.jena.rdf.model.Model
 import org.apache.jena.riot.RDFDataMgr
 
+const val MODEL_PROPERTY = "model"
+
 fun generateWiki(fileName: String, templateDirectory: String, wikiMediaConfig: WikiMediaConfig) {
     val model = RDFDataMgr.loadModel(fileName)
     model.compileWikiPages(templateDirectory)
@@ -18,9 +20,10 @@ fun generateWiki(fileName: String, templateDirectory: String, wikiMediaConfig: W
 fun Model.compileWikiPages(templateDirectory: String): Sequence<Pair<URIRef, Map<String, String>>> {
     val namespaces = getNamespaceMap()
     val templateEngine = templateEngine()
+    val additionalVariables = mapOf(MODEL_PROPERTY to this)
     return fetchSubjectsInDefaultNamespace()
             .map { it.parseSubject(namespaces.values) }
-            .map { it.uriRef to it.asWikiPages(templateEngine, templateDirectory, namespaces) }
+            .map { it.uriRef to it.asWikiPages(templateEngine, templateDirectory, namespaces, additionalVariables) }
 }
 
 fun Sequence<Pair<URIRef, Map<String, String>>>.asPageNameWithText(namespaces: Map<String, Namespace>): Sequence<Pair<String, String>> {

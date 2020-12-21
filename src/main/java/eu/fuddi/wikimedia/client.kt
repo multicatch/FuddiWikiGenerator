@@ -4,12 +4,14 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import org.apache.http.Consts
 import org.apache.http.HttpResponse
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.client.methods.HttpUriRequest
 import org.apache.http.client.protocol.HttpClientContext
 import org.apache.http.client.utils.URIBuilder
+import org.apache.http.entity.ContentType
 import org.apache.http.entity.mime.MultipartEntityBuilder
 import org.apache.http.impl.client.BasicCookieStore
 import org.apache.http.impl.client.CloseableHttpClient
@@ -82,7 +84,7 @@ class WikiMediaClient(
     private fun postEntityOf(params: Map<String, String>) = MultipartEntityBuilder.create()
             .apply {
                 params.forEach { (key, value) ->
-                    addTextBody(key, value)
+                    addTextBody(key, value, ContentType.create("text/plain", Consts.UTF_8))
                 }
             }.build()
 
